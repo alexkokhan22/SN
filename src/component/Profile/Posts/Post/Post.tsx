@@ -1,11 +1,11 @@
 import React from "react";
 import classes from './Post.module.css';
 
-type Message = {
+export type MessagePropsType = {
     message: string
 }
 
-const Post: React.FC<Message> = (props) => {
+const Post: React.FC<MessagePropsType> = (props) => {
     return (
             <div className={classes.post}>
                 <div><img src={'https://vk-wiki.ru/wp-content/uploads/2019/06/user-1.png'}/></div>

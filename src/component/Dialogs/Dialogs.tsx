@@ -1,45 +1,39 @@
 import React from 'react';
-import {NavLink} from 'react-router-dom';
 import classes from './Dialogs.module.css'
+import DialogsItem from "./DialogsItem/DialogsItem";
+import Messages from "./Messages/Messages";
+import {dialogsPropsType} from "../../redux/state";
 
 
-type DialogsItemPropsType = {
-    name: string
-    id: string
-}
-
-const DialogsItem = (props: DialogsItemPropsType) => {
-    return (
-        <div className={classes.item + ' ' + classes.active}>
-            <NavLink to={'/dialogs/' + props.id}>{props.name}</NavLink>
-        </div>
-    )
-}
-
-type MessagesPropsType = {
-    message: string
-}
-
-const Messages = (props: MessagesPropsType) => {
-    return (
-        <div className={classes.message}>{props.message}</div>
-    )
+type DialogsPropsType = {
+    state: dialogsPropsType
 
 }
 
 
-const Dialogs = () => {
+const Dialogs = (props: DialogsPropsType) => {
+
+    let dialogsItem = props.state.dialogs.map(d => <DialogsItem name={d.name} id={d.id}/>)
+    let messageItem = props.state.messages.map(m => <Messages message={m.message}/>)
+
+    let newMessage = React.createRef<HTMLTextAreaElement>()
+    let addMessage = () => {
+        let message = newMessage.current?.value
+        alert(message)
+    }
+
+
+
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItem}>
-                <DialogsItem name={'Alex'} id={'1'}/>
-                <DialogsItem name={'Roma'} id={'2'}/>
-                <DialogsItem name={'Lera'} id={'3'}/>
+                {dialogsItem}
             </div>
             <div className={classes.messages}>
-                <Messages message={'Hi'}/>
-                <Messages message={'How are you ?'}/>
+                {messageItem}
             </div>
+            <textarea ref={newMessage}></textarea>
+            <button onClick={addMessage}>add message</button>
         </div>
     )
 }

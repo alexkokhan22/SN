@@ -2,13 +2,12 @@ import React, {ChangeEvent} from "react";
 import classes from './MyPosts.module.css';
 import Post, {MessagePropsType} from "./Post/Post";
 import {AppPropsType} from "../../../App";
-import {postsPropsType, profilePropsType} from "../../../redux/state";
+import {AddPostDispatchType, NewPostTextFunctionType, postsPropsType, profilePropsType} from "../../../redux/store";
 
 export type MyPostsPropsType = {
     state: Array<postsPropsType>
-    addPost: () => void
+    dispatch: (action: AddPostDispatchType | NewPostTextFunctionType) => void
     newPostText: string
-    newPostTextFunction: (newText: string) => void
 }
 
 
@@ -19,13 +18,13 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
 
     let addPost = () => {
          {
-            props.addPost();
-            props.newPostTextFunction('')
+            props.dispatch({type: "ADD-POST"});
+            props.dispatch({type: "ADD-POST"})
         }
     }
 
     let onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.newPostTextFunction(e.currentTarget.value)
+        props.dispatch({type: 'NEW-POST-TEXT-FUNCTION', newText:e.currentTarget.value})
     }
 
     return (

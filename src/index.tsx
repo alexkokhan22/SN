@@ -1,22 +1,28 @@
 import React from 'react';
 import './index.css';
-import state, {subscribe} from "./redux/state";
-import ReactDOM  from 'react-dom';
+import store from "./redux/store";
+import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {addPost, newPostTextFunction} from "./redux/state";
 
-let renderApp = () => {
+
+const renderApp = () => {
     ReactDOM.render(
         <React.StrictMode>
-            <App state={state} addPost={addPost} newPostTextFunction={newPostTextFunction}/>
+            <App
+                state={store.getState()}
+                dispatch={store.dispatch.bind(store)}
+            />
         </React.StrictMode>, document.getElementById('root')
     );
+}
+
+
+renderApp()
+store.subscribe(renderApp)
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-    reportWebVitals();}
-
-renderApp()
-subscribe(renderApp)
+reportWebVitals();

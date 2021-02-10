@@ -8,14 +8,13 @@ import Music from "./component/Music/music";
 import News from "./component/News/News";
 import Settings from "./component/Settings/Settings";
 import Dialogs from "./component/Dialogs/Dialogs";
-import {StatePropsType} from "./redux/state";
+import {AddPostDispatchType, NewPostTextFunctionType, StatePropsType} from "./redux/store";
 
 
 
 export type AppPropsType = {
     state: StatePropsType
-    addPost: () => void
-    newPostTextFunction: (newText: string) => void
+    dispatch: (action: AddPostDispatchType | NewPostTextFunctionType) => void
 }
 
 
@@ -31,9 +30,8 @@ const App = (props: AppPropsType) => {
                            render={() => <Dialogs state={props.state.dialogs}/>}/>
                     <Route path={'/profile'} render={() =>
                         <Profile state={props.state.profile}
-                                 addPost={props.addPost}
+                                 dispatch={props.dispatch}
                                  newPostText={props.state.profile.newPostText}
-                                 newPostTextFunction={props.newPostTextFunction}
                         />}/>
                     <Route path={'/music'} render={() => <Music/>}/>
                     <Route path={'/news'} render={() => <News/>}/>

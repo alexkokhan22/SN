@@ -1,14 +1,13 @@
 import React from "react";
-import MyPosts from "./Posts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import {AddPostDispatchType, NewPostTextFunctionType, profilePropsType} from "../../redux/store";
+import {actionType, profilePropsType} from "../../redux/profileReducer";
+import MyPostsContainer from "./Posts/MyPostsContainer";
+import {StatePropsType} from "../../redux/reduxStore";
 
 
 export type ProfilePropsType = {
-    state: profilePropsType
-    dispatch: (action: AddPostDispatchType | NewPostTextFunctionType) => void
-    newPostText: string
-
+    state: StatePropsType
+    dispatch: (action: actionType) => void
 }
 
 
@@ -18,9 +17,9 @@ const Profile = (props: ProfilePropsType) => {
     return (
         <div>
             <ProfileInfo/>
-            <MyPosts state={props.state.posts}
-                     dispatch={props.dispatch}
-                     newPostText={props.newPostText}
+            <MyPostsContainer
+                state={props.state}
+                dispatch={props.dispatch}
             />
         </div>
     );

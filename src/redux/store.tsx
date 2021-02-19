@@ -1,53 +1,48 @@
-export type messagePropsType = {
+import profileReducer, { AddPostDispatchType, NewPostTextFunctionType } from "./profileReducer";
+import dialogsReducer, { AddNewMessageType, NewMessageFunctionType } from "./dialogsReducer";
+
+ type messagePropsType = {
     id: number
     message: string
 }
 
 
-export type dialogPropsType = {
+ type dialogPropsType = {
     id: number
     name: string
 }
 
 
-export type dialogsPropsType = {
+ type dialogsPropsType = {
     dialogs: Array<dialogPropsType>
     messages: Array<messagePropsType>
+    newMessageText: string
 }
 
-export type postsPropsType = {
+ type postsPropsType = {
     id: number
     message: string
     likeCount: number
 }
 
-export type profilePropsType = {
+ type profilePropsType = {
     posts: Array<postsPropsType>
     newPostText: string
 }
 
-
-export type StatePropsType = {
+ type StatePropsType = {
     profile: profilePropsType
     dialogs: dialogsPropsType
 }
 
-export type AddPostDispatchType = {
-    type: 'ADD-POST'
+type actionType = AddPostDispatchType | NewPostTextFunctionType | AddNewMessageType | NewMessageFunctionType
 
-}
-
-export type NewPostTextFunctionType = {
-    type: 'NEW-POST-TEXT-FUNCTION'
-    newText: string
-}
-
-export type StoreType = {
+type StoreType = {
     _state: StatePropsType
     getState: () => StatePropsType
     _render: () => void
     subscribe: (callback: () => void) => void
-    dispatch: (action: AddPostDispatchType | NewPostTextFunctionType) => void
+    dispatch: (action: actionType) => void
 
 }
 
@@ -69,7 +64,8 @@ let store: StoreType = {
             messages: [
                 {id: 1, message: 'Hi'},
                 {id: 2, message: 'How are you ?'}
-            ]
+            ],
+            newMessageText: ''
         }
     },
     _render() {
@@ -80,27 +76,17 @@ let store: StoreType = {
     getState() {
         return this._state
     },
+
     subscribe(callback) {
         this._render = callback;
     },
 
     dispatch(action) {
-        if(action.type === 'ADD-POST') {
-            let newPost: postsPropsType = {
-                id: 3,
-                message: this._state.profile.newPostText,
-                likeCount: 0
-            }
-            this._state.profile.posts.push(newPost)
-            this._render();
-
-        } else if (action.type === 'NEW-POST-TEXT-FUNCTION') {
-            this._state.profile.newPostText = action.newText;
-            this._render();
-        }
+        this._state.profile = profileReducer(this._state.profile, action)
+        this._state.dialogs = dialogsReducer(this._state.dialogs, action)
+        this._render();
     }
 }
-
 
 
 

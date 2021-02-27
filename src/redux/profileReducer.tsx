@@ -37,20 +37,19 @@ let initialState: profilePropsType = {
 const profileReducer = (state = initialState, action: actionType) => {
     // logic switch
     switch (action.type) {
-        case "ADD-POST":
-            let newPost: postsPropsType = {
-                id: 3,
-                message: state.newPostText,
-                likeCount: 0
+        case "ADD-POST": {
+            return {
+                ...state,
+                posts: [...state.posts, {id: 3, message: state.newPostText, likeCount: 0}],
+                newPostText: action.newText
             }
-            state.posts.push(newPost);
-            state.newPostText = action.newText;
-            return state;
-
-        case "NEW-POST-TEXT-FUNCTION":
-            state.newPostText = action.newText;
-            return state;
-
+        }
+        case "NEW-POST-TEXT-FUNCTION": {
+            return {
+                ...state,
+                newPostText: action.newText
+            }
+        }
         default:
             return state;
     }

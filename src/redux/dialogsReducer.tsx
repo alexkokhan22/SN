@@ -42,19 +42,23 @@ let initialState: dialogsPropsType  = {
 }
 
 
-const dialogsReducer = (state = initialState, action: actionType) => {
+const dialogsReducer = (state = initialState, action: actionType): dialogsPropsType => {
     switch (action.type) {
         case "Add-New-Message":
-            let newMessage: messagePropsType = {
-                id: 4,
-                message: state.newMessageText
+            return  {
+                ...state,
+                messages: [...state.messages, {id: 4, message: state.newMessageText}],
+                newMessageText: action.newTextMessage
+
             }
-            state.messages.push(newMessage);
-            state.newMessageText = action.newTextMessage;
-            return state;
+            //state.messages.push(newMessage);
+           // state.newMessageText = action.newTextMessage;
         case "New-Message-Function":
-            state.newMessageText = action.newMessageText;
-            return state;
+            return  {
+                ...state,
+                newMessageText: action.newMessageText
+            }
+            //state.newMessageText = action.newMessageText;
         default:
             return state
 

@@ -1,38 +1,45 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import {
-    AddNewMessageType,
-    NewMessageFunctionType,
+    dialogsPropsType,
     onChangeMessageActionCreator,
     onClickMessageActionCreator
 } from "../../redux/dialogsReducer";
-import {StatePropsType} from "../../redux/reduxStore";
+import {AppStatePropsType} from "../../redux/reduxStore";
 import Dialogs from './Dialogs';
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
 
 
-type DialogsContainerPropsType = {
-    state: StatePropsType
-    dispatch: (action: AddNewMessageType | NewMessageFunctionType) => void
-
+type mapStateToPropsType = {
+    dialogs: dialogsPropsType
+    newMessageText: string
 }
 
-
-const DialogsContainer = (props: DialogsContainerPropsType) => {
-
-    let addMessage = () => {
-        props.dispatch(onClickMessageActionCreator())
-    }
-
-    let onChangeText = (text: string) => {
-        props.dispatch(onChangeMessageActionCreator(text))
-    }
-
-
-    return <Dialogs
-        state={props.state.dialogs}
-        onChangeText={onChangeText}
-        addMessage={addMessage}
-        newMessageText={props.state.dialogs.newMessageText}
-    />
+type mapDispatchToPropsType = {
+    onChangeText: () => void
+    addMessage: (text: string) => void
 }
 
-export default DialogsContainer
+export type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
+
+const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
+    return {
+        dialogs: state.dialogs,
+        newMessageText: state.dialogs.newMessageText
+    }
+}
+
+const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
+    return {
+        onChangeText: () => {
+            dispatch(onClickMessageActionCreator())
+        },
+        addMessage: (text: string) => {
+            dispatch(onChangeMessageActionCreator(text))
+        }
+    }
+}
+
+const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+
+export default DialogsContainer;

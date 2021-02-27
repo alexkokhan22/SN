@@ -1,16 +1,17 @@
 import {combineReducers, createStore} from "redux";
-import profileReducer, { profilePropsType } from "./profileReducer";
-import dialogsReducer, { dialogsPropsType } from "./dialogsReducer";
+import dialogsReducer from "./dialogsReducer";
+import profileReducer from "./profileReducer";
+import {usersReducer} from "./usersReducer";
 
-export type StatePropsType = {
-    profile: profilePropsType
-    dialogs: dialogsPropsType
-}
+
 
 let reducers = combineReducers({
     profile: profileReducer,
-    dialogs: dialogsReducer
+    dialogs: dialogsReducer,
+    users: usersReducer
 })
+
+export type AppStatePropsType = ReturnType<typeof reducers>
 
 
 let store = createStore(reducers);

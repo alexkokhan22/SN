@@ -1,16 +1,21 @@
-export type locationPropsType = {
+/*export type locationPropsType = {
     country: string
     city: string
+}*/
+
+type usersPhotosType = {
+    small: string | null
+    large: string | null
 }
 
 
 export type userPropsType = {
     id: number
-    photo: string
+    photos: usersPhotosType
     followed: boolean
-    fullName: string
+    name: string
     status: string
-    location: locationPropsType
+   // location: locationPropsType
 }
 
 export type UsersPropsType = {

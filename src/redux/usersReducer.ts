@@ -15,11 +15,14 @@ export type userPropsType = {
     followed: boolean
     name: string
     status: string
-   // location: locationPropsType
+    // location: locationPropsType
 }
 
 export type UsersPropsType = {
     users: Array<userPropsType>
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
 }
 
 export type followACPropsType = {
@@ -37,12 +40,28 @@ export type setUsersACPropsType = {
     users: Array<userPropsType>
 }
 
-export type ActionUsersPropsType = followACPropsType | unfollowACPropsType | setUsersACPropsType
+export type changeCurrentPageType = {
+    type: 'CHANGE_CURRENT_PAGE'
+    currentPage: number
+}
 
+export type setTotalUsersCountType = {
+    type: 'SET_TOTAL_USERS_COUNT'
+    totalCount: number
+}
+
+export type ActionUsersPropsType = followACPropsType
+    | unfollowACPropsType
+    | setUsersACPropsType
+    | changeCurrentPageType
+    | setTotalUsersCountType
 
 
 export let initialState: UsersPropsType = {
-    users: []
+    users: [],
+    pageSize: 5,
+    totalUsersCount: 0,
+    currentPage: 1
 }
 
 export const usersReducer = (state = initialState, action: ActionUsersPropsType): UsersPropsType => {
@@ -70,9 +89,21 @@ export const usersReducer = (state = initialState, action: ActionUsersPropsType)
         case 'SET_USERS':
             return {
                 ...state,
-                users: [...state.users, ...action.users]
+                users: action.users
             }
-        default: return state
+
+        case 'CHANGE_CURRENT_PAGE':
+            return {
+                ...state,
+                currentPage: action.currentPage
+            }
+        case "SET_TOTAL_USERS_COUNT":
+            return {
+                ...state,
+                totalUsersCount: action.totalCount
+            }
+        default:
+            return state
     }
 }
 
@@ -85,5 +116,13 @@ export const unfollowAC = (userId: number): unfollowACPropsType => {
 
 export const setUsersAC = (users: Array<userPropsType>): setUsersACPropsType => {
     return {type: 'SET_USERS', users}
+}
+
+export const changeCurrentPageAC = (currentPage: number): changeCurrentPageType => {
+    return {type: 'CHANGE_CURRENT_PAGE', currentPage}
+}
+
+export const setTotalUsersCountAC = (totalCount: number): setTotalUsersCountType => {
+    return {type: 'SET_TOTAL_USERS_COUNT', totalCount}
 }
 

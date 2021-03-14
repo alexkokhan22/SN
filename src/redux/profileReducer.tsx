@@ -1,5 +1,33 @@
 import {AddNewMessageType, NewMessageFunctionType} from "./dialogsReducer";
 
+export type usersProfilePhotosType = {
+    small: string
+    large: string
+}
+
+export type contactsUsersPropsType = {
+    skype: string
+    vk: string
+    facebook: string
+    icq: string
+    email: string
+    googlePlus: string
+    twitter: string
+    instagram: string
+    whatsApp: string
+}
+
+export type profileUsersPropsType = {
+    aboutMe: string | null
+    contacts: contactsUsersPropsType | null
+    lookingForAJob: boolean
+    lookingForAJobDescription: string | null
+    fullName: string | null
+    userId: number | null
+    photos: usersProfilePhotosType | null
+
+}
+
 export type postsPropsType = {
     id: number
     message: string
@@ -9,6 +37,7 @@ export type postsPropsType = {
 export type profilePropsType = {
     posts: Array<postsPropsType>
     newPostText: string
+    profile: profileUsersPropsType
 }
 
 export type AddPostDispatchType = {
@@ -22,7 +51,16 @@ export type NewPostTextFunctionType = {
     newText: string
 }
 
-export type actionType = AddPostDispatchType | NewPostTextFunctionType | AddNewMessageType | NewMessageFunctionType
+export type SetUsersProfile = {
+    type: 'SET-USERS-PROFILE'
+    profile: profileUsersPropsType
+}
+
+export type actionType = AddPostDispatchType
+    | NewPostTextFunctionType
+    | AddNewMessageType
+    | NewMessageFunctionType
+    | SetUsersProfile
 
 
 let initialState: profilePropsType = {
@@ -30,7 +68,29 @@ let initialState: profilePropsType = {
         {id: 1, message: 'My first post', likeCount: 11},
         {id: 2, message: 'Hi, how are you', likeCount: 21},
     ],
-    newPostText: ''
+    newPostText: '',
+    profile: {
+        aboutMe: '',
+        contacts: {
+            skype: '',
+            vk: '',
+            facebook: '',
+            icq: '',
+            email: '',
+            googlePlus: '',
+            twitter: '',
+            instagram: '',
+            whatsApp: ''
+        },
+        lookingForAJob: true,
+        lookingForAJobDescription: '',
+        fullName: '',
+        userId: 1,
+        photos: {
+            small: '',
+            large: ''
+        }
+    }
 }
 
 
@@ -50,6 +110,14 @@ const profileReducer = (state = initialState, action: actionType) => {
                 newPostText: action.newText
             }
         }
+
+        case "SET-USERS-PROFILE": {
+            return {
+                ...state,
+                profile: action.profile
+            }
+        }
+
         default:
             return state;
     }
@@ -82,6 +150,10 @@ export const onChangeActionCreator = (text: string): NewPostTextFunctionType => 
         type: "NEW-POST-TEXT-FUNCTION",
         newText: text
     }
+}
+
+export const setUsersProfile = (profile: profileUsersPropsType): SetUsersProfile => {
+    return {type: "SET-USERS-PROFILE", profile}
 }
 
 

@@ -3,7 +3,8 @@ import Profile from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
 import {profileUsersPropsType, setUsersProfile} from "../../redux/profileReducer";
-import {RouteComponentProps, withRouter } from "react-router-dom";
+import {RouteComponentProps, withRouter} from "react-router-dom";
+import {profileApi} from "../../api/api";
 
 type PathParamsType = {
     userId: string
@@ -12,6 +13,8 @@ type PathParamsType = {
 
 export type mapStateProfileToPropsType = {
     profile: profileUsersPropsType
+
+
 }
 
 export type mapDispatchProfileToPropsType = {
@@ -29,9 +32,9 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
         if (!userId) {
             userId = '2'
         }
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then((response) => {
-                this.props.setUsersProfile(response.data)
+        profileApi.setUsersProfile(userId)
+            .then((data) => {
+                this.props.setUsersProfile(data)
             })
     }
 
@@ -45,7 +48,7 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
 }
 
 let mapStateToProps = (state: any) => ({
-      profile: state.profile.profile
+    profile: state.profile.profile
 })
 
 let UserIdUrlProfilePage = withRouter(ProfileContainer)

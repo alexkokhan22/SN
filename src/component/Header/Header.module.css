@@ -6,3 +6,8 @@
     grid-area: h;
     background-color: black;
 }
+
+.login {
+    float: right;
+    color: aliceblue;
+}

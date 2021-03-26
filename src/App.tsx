@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Header from "./component/Header/Header";
 import Nav from "./component/Nav/Nav";
 import Music from "./component/Music/music";
 import News from "./component/News/News";
@@ -10,6 +9,7 @@ import DialogsContainer from './component/Dialogs/DialogsContainer';
 import UsersContainer from "./component/Users/UsersContainer";
 import ProfileContainer from "./component/Profile/ProfileContainer";
 import HeaderContainer from "./component/Header/HeaderContainer";
+import Login from "./component/login/login";
 
 
 
@@ -25,6 +25,7 @@ const App = () => {
                 <Route path={'/users'} render={() => <UsersContainer/>}/>
                 <Route path={'/music'} render={() => <Music/>}/>
                 <Route path={'/news'} render={() => <News/>}/>
+                <Route path={'/login'} render={() => <Login/>}/>
                 <Route path={'/settings'} render={() => <Settings/>}/>
             </div>
 

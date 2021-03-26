@@ -1,10 +1,8 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
-import {profileUsersPropsType, setUsersProfile} from "../../redux/profileReducer";
-import {RouteComponentProps, withRouter} from "react-router-dom";
-import {profileApi} from "../../api/api";
+import {profileUsersPropsType,  setUsersProfileThunk} from "../../redux/profileReducer";
+import {Redirect, RouteComponentProps, withRouter} from "react-router-dom";
 
 type PathParamsType = {
     userId: string
@@ -13,12 +11,11 @@ type PathParamsType = {
 
 export type mapStateProfileToPropsType = {
     profile: profileUsersPropsType
-
-
+    isAuth: boolean
 }
 
 export type mapDispatchProfileToPropsType = {
-    setUsersProfile: (profile: profileUsersPropsType) => void
+    setUsersProfile: (userId: string) => void
 }
 
 export type ProfileContainerPropsType = mapStateProfileToPropsType & mapDispatchProfileToPropsType
@@ -32,13 +29,14 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
         if (!userId) {
             userId = '2'
         }
-        profileApi.setUsersProfile(userId)
-            .then((data) => {
-                this.props.setUsersProfile(data)
-            })
+        this.props.setUsersProfile(userId)
     }
 
     render() {
+        if(this.props.isAuth === false) {
+            return <Redirect to={'/login'}/>
+        }
+
         return (
             <div>
                 <Profile {...this.props} profile={this.props.profile}/>
@@ -48,9 +46,10 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
 }
 
 let mapStateToProps = (state: any) => ({
-    profile: state.profile.profile
+    profile: state.profile.profile,
+    isAuth: state.auth.isAuth
 })
 
 let UserIdUrlProfilePage = withRouter(ProfileContainer)
 
-export default connect(mapStateToProps, {setUsersProfile})(UserIdUrlProfilePage);
+export default connect(mapStateToProps, {setUsersProfile: setUsersProfileThunk})(UserIdUrlProfilePage);

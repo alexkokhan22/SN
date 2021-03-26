@@ -4,16 +4,13 @@ import {AppStatePropsType} from "../../redux/reduxStore";
 import {
     changeCurrentPage,
     follow,
-    toggleIsFetching,
-    setTotalUsersCount,
-    setUsers, unFollow,
+    unFollow,
     toggleFollowingInProgress,
-    userPropsType
+    userPropsType, getUserThunkCreator, followThunk, unFollowThunk
 } from "../../redux/usersReducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
-import { usersApi } from "../../api/api";
-
+import {Redirect} from "react-router-dom";
 
 
 export type mapStateToPropsType = {
@@ -23,40 +20,34 @@ export type mapStateToPropsType = {
     currentPage: number
     isFetching: boolean
     followingInProgress: Array<number>
+    isAuth: boolean
 }
 
 export type mapDispatchToPropsType = {
     follow: (userId: number) => void
     unFollow: (userId: number) => void
-    setUsers: (users: Array<userPropsType>) => void
     changeCurrentPage: (currentPage: number) => void
-    setTotalUsersCount: (totalCount: number) => void
-    toggleIsFetching: (isFetching: boolean) => void
     toggleFollowingInProgress: (isFetching: boolean, userId: number) => void
+    getUser: (currentPage: number, pageSize: number) => void
 }
 
 export type UsersContainerPropsType = mapStateToPropsType & mapDispatchToPropsType
 
 export class UsersApiComponent extends React.Component<UsersContainerPropsType> {
     componentDidMount() {
-        this.props.toggleIsFetching(true)
-        usersApi.getUsers(this.props.currentPage, this.props.pageSize).then((data) => {
-            this.props.toggleIsFetching(false)
-            this.props.setUsers(data.items)
-            this.props.setTotalUsersCount(data.totalCount)
-        })
+        this.props.getUser(this.props.currentPage, this.props.pageSize)
     }
 
     onPageChanged = (pageNumber: number) => {
         this.props.changeCurrentPage(pageNumber)
-        this.props.toggleIsFetching(true)
-        usersApi.getUsers(pageNumber, this.props.pageSize).then((data) => {
-            this.props.toggleIsFetching(false)
-            this.props.setUsers(data.items)
-        })
+        this.props.getUser(pageNumber, this.props.pageSize)
     }
 
     render() {
+        if(this.props.isAuth === false) {
+            return <Redirect to={'/login'}/>
+        }
+
         return <>
             {this.props.isFetching ? <Preloader/> : null}
             <Users
@@ -82,7 +73,8 @@ const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
         totalUsersCount: state.users.totalUsersCount,
         currentPage: state.users.currentPage,
         isFetching: state.users.isFetching,
-        followingInProgress: state.users.followingInProgress
+        followingInProgress: state.users.followingInProgress,
+        isAuth: state.auth.isAuth
 
     }
 }
@@ -116,13 +108,11 @@ const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
 
 
 const UsersContainer = connect(mapStateToProps, {
-    follow,
-    unFollow,
-    setUsers,
+    follow: followThunk,
+    unFollow: unFollowThunk,
     changeCurrentPage,
-    setTotalUsersCount,
-    toggleIsFetching,
-    toggleFollowingInProgress
+    toggleFollowingInProgress,
+    getUser: getUserThunkCreator
 })(UsersApiComponent);
 
 export default UsersContainer;

@@ -1,3 +1,7 @@
+import {Dispatch} from "redux";
+import {headerApi} from "../api/api";
+
+
 type setUsersDataType = {
     type: "SET-USERS-DATA"
     data: {
@@ -10,7 +14,7 @@ type setUsersDataType = {
 
 export type actionType = setUsersDataType
 
-type authPropsType = {
+export type authPropsType = {
     id: number | null
     login: string | null
     email: string | null
@@ -41,4 +45,13 @@ export const authReducer = (state: authPropsType = initialState, action: actionT
 
 export const setUsersData = (id: number, login: string, email: string): setUsersDataType => {
     return {type: "SET-USERS-DATA", data: {id, login, email}}
+}
+
+export const setUsersDataThunk = () => (dispatch: Dispatch) => {
+    headerApi.setUsersLogin().then((data) => {
+        if(data.resultCode === 0) {
+            let {id, login, email} = data.data
+            dispatch(setUsersData(id, login, email))
+        }
+    })
 }

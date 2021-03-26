@@ -1,4 +1,7 @@
 import {AddNewMessageType, NewMessageFunctionType} from "./dialogsReducer";
+import {Dispatch} from "redux";
+import {profileApi} from "../api/api";
+
 
 export type usersProfilePhotosType = {
     small: string
@@ -156,5 +159,11 @@ export const setUsersProfile = (profile: profileUsersPropsType): SetUsersProfile
     return {type: "SET-USERS-PROFILE", profile}
 }
 
+export const setUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => {
+    profileApi.setUsersProfile(userId)
+        .then((data) => {
+            dispatch(setUsersProfile(data))
+        })
+}
 
 export default profileReducer;

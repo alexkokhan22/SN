@@ -3,6 +3,9 @@
     city: string
 }*/
 
+import {Dispatch} from "redux";
+import {usersApi} from "../api/api";
+
 type usersPhotosType = {
     small: string | null
     large: string | null
@@ -164,3 +167,32 @@ export const toggleFollowingInProgress = (isFetching: boolean, usersId: number):
     return {type: 'TOGGLE_FOLLOWING_IN_PROGRESS', isFetching, usersId}
 }
 
+
+export const getUserThunkCreator = (currentPage: number, pageSize: number) => (dispatch: Dispatch) => {
+    dispatch(toggleIsFetching(true))
+    usersApi.getUsers(currentPage, pageSize).then((data) => {
+        dispatch(toggleIsFetching(false))
+        dispatch(setUsers(data.items))
+        dispatch(setTotalUsersCount(data.totalCount))
+    })
+}
+
+
+
+export const unFollowThunk = (userId: number) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingInProgress(true, userId))
+    usersApi.unFollowUsers(userId).then((data) => {
+        if (data.resultCode == 0) {
+            dispatch(unFollow(userId))
+        }
+        dispatch(toggleFollowingInProgress(false, userId))
+})}
+
+export const followThunk = (userId: number) => (dispatch: Dispatch) => {
+    dispatch(toggleFollowingInProgress(true, userId))
+    usersApi.followUsers(userId).then((data) => {
+        if (data.resultCode == 0) {
+            dispatch(follow(userId))
+        }
+        dispatch(toggleFollowingInProgress(false, userId))
+    })}

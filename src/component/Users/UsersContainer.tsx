@@ -3,14 +3,14 @@ import {connect} from "react-redux";
 import {AppStatePropsType} from "../../redux/reduxStore";
 import {
     changeCurrentPage,
-    follow,
-    unFollow,
     toggleFollowingInProgress,
     userPropsType, getUserThunkCreator, followThunk, unFollowThunk
 } from "../../redux/usersReducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
-import {Redirect} from "react-router-dom";
+import {withAuthRedirectComponent} from "../../HOC/WithAuthRedirectComponent";
+import {compose} from "redux";
+
 
 
 export type mapStateToPropsType = {
@@ -44,9 +44,6 @@ export class UsersApiComponent extends React.Component<UsersContainerPropsType> 
     }
 
     render() {
-        if(this.props.isAuth === false) {
-            return <Redirect to={'/login'}/>
-        }
 
         return <>
             {this.props.isFetching ? <Preloader/> : null}
@@ -106,13 +103,11 @@ const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
 }*/
 }
 
-
-const UsersContainer = connect(mapStateToProps, {
+export default compose<React.ComponentType>(
+    withAuthRedirectComponent,
+    connect(mapStateToProps, {
     follow: followThunk,
     unFollow: unFollowThunk,
     changeCurrentPage,
     toggleFollowingInProgress,
-    getUser: getUserThunkCreator
-})(UsersApiComponent);
-
-export default UsersContainer;
+    getUser: getUserThunkCreator}))(UsersApiComponent);

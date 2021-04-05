@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {headerApi} from "../api/api";
+import {headerApi, loginApi} from "../api/api";
 
 
 type setUsersDataType = {
@@ -55,3 +55,9 @@ export const setUsersDataThunk = () => (dispatch: Dispatch) => {
         }
     })
 }
+
+// export const setLoginDataThunk = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch) => {
+//     loginApi.postUsersLogin(email, password, rememberMe).then((data) => {
+//             dispatch(data)
+//     })
+// }

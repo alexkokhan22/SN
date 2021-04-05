@@ -41,6 +41,7 @@ export type profilePropsType = {
     posts: Array<postsPropsType>
     newPostText: string
     profile: profileUsersPropsType
+    status: string
 }
 
 export type AddPostDispatchType = {
@@ -59,11 +60,17 @@ export type SetUsersProfile = {
     profile: profileUsersPropsType
 }
 
+export type SetUsersStatus = {
+    type: 'SET-USERS-STATUS'
+    status: string
+}
+
 export type actionType = AddPostDispatchType
     | NewPostTextFunctionType
     | AddNewMessageType
     | NewMessageFunctionType
     | SetUsersProfile
+    | SetUsersStatus
 
 
 let initialState: profilePropsType = {
@@ -93,7 +100,8 @@ let initialState: profilePropsType = {
             small: '',
             large: ''
         }
-    }
+    },
+    status: ''
 }
 
 
@@ -118,6 +126,13 @@ const profileReducer = (state = initialState, action: actionType) => {
             return {
                 ...state,
                 profile: action.profile
+            }
+        }
+
+        case "SET-USERS-STATUS": {
+            return {
+                ...state,
+                status: action.status
             }
         }
 
@@ -155,6 +170,12 @@ export const onChangeActionCreator = (text: string): NewPostTextFunctionType => 
     }
 }
 
+export const setStatusActionCreator = (status: string): SetUsersStatus => {
+    return {
+        type: "SET-USERS-STATUS", status
+    }
+}
+
 export const setUsersProfile = (profile: profileUsersPropsType): SetUsersProfile => {
     return {type: "SET-USERS-PROFILE", profile}
 }
@@ -163,6 +184,23 @@ export const setUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => 
     profileApi.setUsersProfile(userId)
         .then((data) => {
             dispatch(setUsersProfile(data))
+        })
+}
+
+export const getUsersStatusThunk = (userId: string) => (dispatch: Dispatch) => {
+    profileApi.getStatus(userId)
+        .then((data) => {
+            dispatch(setStatusActionCreator(data))
+        })
+}
+
+export const updateUsersStatusThunk = (status: string) => (dispatch: Dispatch) => {
+    profileApi.updateStatus(status)
+        .then((data) => {
+            if(data.resultCode === 0) {
+                dispatch(setStatusActionCreator(status))
+            }
+
         })
 }
 

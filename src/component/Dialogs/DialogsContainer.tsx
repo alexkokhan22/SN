@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     dialogsPropsType,
-    onChangeMessageActionCreator,
     onClickMessageActionCreator
 } from "../../redux/dialogsReducer";
 import {AppStatePropsType} from "../../redux/reduxStore";
@@ -13,12 +12,10 @@ import {withAuthRedirectComponent} from "../../HOC/WithAuthRedirectComponent";
 
 type mapStateToPropsType = {
     dialogs: dialogsPropsType
-    newMessageText: string
 }
 
 type mapDispatchToPropsType = {
-    onChangeText: () => void
-    addMessage: (text: string) => void
+    onChangeText: (addMessage: string) => void
 }
 
 export type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
@@ -26,17 +23,13 @@ export type DialogsPropsType = mapStateToPropsType & mapDispatchToPropsType
 const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
     return {
         dialogs: state.dialogs,
-        newMessageText: state.dialogs.newMessageText
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     return {
-        onChangeText: () => {
-            dispatch(onClickMessageActionCreator())
-        },
-        addMessage: (text: string) => {
-            dispatch(onChangeMessageActionCreator(text))
+        onChangeText: (addMessage: string) => {
+            dispatch(onClickMessageActionCreator(addMessage))
         }
     }
 }

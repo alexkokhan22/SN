@@ -13,18 +13,20 @@ import {AppStatePropsType} from "../../redux/reduxStore";
 import {compose} from "redux";
 
 type PathParamsType = {
-    userId: string
+    userId: any
 }
 
 
 export type mapStateProfileToPropsType = {
     profile: profileUsersPropsType
     status: string
+    myId: number | null
+    isAuth: boolean
 }
 
 export type mapDispatchProfileToPropsType = {
-    setUsersProfile: (userId: string) => void
-    getStatus: (userId: string) => void
+    setUsersProfile: (userId: string | number | null) => void
+    getStatus: (userId: string | number | null) => void
     updateStatus: (status: string) => void
 }
 
@@ -37,7 +39,7 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
     componentDidMount() {
         let userId = this.props.match.params.userId
         if (!userId) {
-            userId = '2'
+            userId = this.props.myId
         }
         this.props.setUsersProfile(userId)
         this.props.getStatus(userId)
@@ -59,7 +61,9 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
 
 let mapStateToProps = (state: AppStatePropsType): mapStateProfileToPropsType => ({
     profile: state.profile.profile,
-    status: state.profile.status
+    status: state.profile.status,
+    myId: state.auth.id,
+    isAuth: state.auth.isAuth
 })
 
 

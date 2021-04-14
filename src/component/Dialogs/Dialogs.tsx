@@ -3,10 +3,7 @@ import classes from './Dialogs.module.css'
 import DialogsItem from "./DialogsItem/DialogsItem";
 import Messages from "./Messages/Messages";
 import {DialogsPropsType} from "./DialogsContainer";
-
-
-
-
+import MessageReduxForm, { FormDataType } from './messageForm/MessageForm';
 
 
 const Dialogs = (props: DialogsPropsType) => {
@@ -14,17 +11,9 @@ const Dialogs = (props: DialogsPropsType) => {
     let dialogsItem = props.dialogs.dialogs.map(d => <DialogsItem name={d.name} id={d.id} key={d.id}/>)
     let messageItem = props.dialogs.messages.map(m => <Messages message={m.message} key={m.id}/>)
 
-
-    let addMessage = () => {
-        props.onChangeText()
+    let addNewMessage = (values: FormDataType) => {
+        props.onChangeText(values.addMessage)
     }
-
-    let onChangeText = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        let text = e.currentTarget.value
-        props.addMessage(text)
-
-    }
-
 
     return (
         <div className={classes.dialogs}>
@@ -34,8 +23,7 @@ const Dialogs = (props: DialogsPropsType) => {
             <div className={classes.messages}>
                 {messageItem}
             </div>
-            <textarea onChange={onChangeText} value={props.dialogs.newMessageText}></textarea>
-            <button onClick={addMessage}>add message</button>
+            <MessageReduxForm onSubmit={addNewMessage}/>
         </div>
     )
 }

@@ -1,5 +1,3 @@
-import {AddPostDispatchType, NewPostTextFunctionType} from "./profileReducer";
-
 export type messagePropsType = {
     id: number
     message: string
@@ -13,11 +11,11 @@ export type dialogPropsType = {
 export type dialogsPropsType = {
     dialogs: Array<dialogPropsType>
     messages: Array<messagePropsType>
-    newMessageText: string
 }
 
 export type AddNewMessageType = {
     type: 'Add-New-Message',
+    addMessage: string
     newTextMessage: string
 }
 
@@ -26,9 +24,9 @@ export type NewMessageFunctionType = {
     newMessageText: string
 }
 
-export type actionType = AddPostDispatchType | NewPostTextFunctionType | AddNewMessageType | NewMessageFunctionType
+export type actionType = AddNewMessageType
 
-let initialState: dialogsPropsType  = {
+let initialState: dialogsPropsType = {
     dialogs: [
         {id: 1, name: 'Alex'},
         {id: 2, name: 'Roma'},
@@ -37,28 +35,19 @@ let initialState: dialogsPropsType  = {
     messages: [
         {id: 1, message: 'Hi'},
         {id: 2, message: 'How are you ?'}
-    ],
-    newMessageText: ''
+    ]
 }
 
 
 const dialogsReducer = (state = initialState, action: actionType): dialogsPropsType => {
     switch (action.type) {
         case "Add-New-Message":
-            return  {
+            return {
                 ...state,
-                messages: [...state.messages, {id: 4, message: state.newMessageText}],
-                newMessageText: action.newTextMessage
-
+                messages: [...state.messages, {id: 4, message: action.addMessage}],
             }
-            //state.messages.push(newMessage);
-           // state.newMessageText = action.newTextMessage;
-        case "New-Message-Function":
-            return  {
-                ...state,
-                newMessageText: action.newMessageText
-            }
-            //state.newMessageText = action.newMessageText;
+        //state.messages.push(newMessage);
+        // state.newMessageText = action.newTextMessage;
         default:
             return state
 
@@ -82,12 +71,9 @@ const dialogsReducer = (state = initialState, action: actionType): dialogsPropsT
     */
 }
 
-export const onClickMessageActionCreator = (): AddNewMessageType => {
-    return {type: 'Add-New-Message', newTextMessage: ""}
+export const onClickMessageActionCreator = (addMessage: string): AddNewMessageType => {
+    return {type: 'Add-New-Message', addMessage, newTextMessage: ""}
 }
 
-export const onChangeMessageActionCreator = (text: string): NewMessageFunctionType => {
-    return {type: 'New-Message-Function', newMessageText: text}
-}
 
 export default dialogsReducer;

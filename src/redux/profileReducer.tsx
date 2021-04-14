@@ -39,21 +39,16 @@ export type postsPropsType = {
 
 export type profilePropsType = {
     posts: Array<postsPropsType>
-    newPostText: string
     profile: profileUsersPropsType
     status: string
 }
 
 export type AddPostDispatchType = {
     type: 'ADD-POST',
-    newText: string
+    addPost: string
 
 }
 
-export type NewPostTextFunctionType = {
-    type: 'NEW-POST-TEXT-FUNCTION'
-    newText: string
-}
 
 export type SetUsersProfile = {
     type: 'SET-USERS-PROFILE'
@@ -66,9 +61,6 @@ export type SetUsersStatus = {
 }
 
 export type actionType = AddPostDispatchType
-    | NewPostTextFunctionType
-    | AddNewMessageType
-    | NewMessageFunctionType
     | SetUsersProfile
     | SetUsersStatus
 
@@ -78,7 +70,6 @@ let initialState: profilePropsType = {
         {id: 1, message: 'My first post', likeCount: 11},
         {id: 2, message: 'Hi, how are you', likeCount: 21},
     ],
-    newPostText: '',
     profile: {
         aboutMe: '',
         contacts: {
@@ -111,14 +102,7 @@ const profileReducer = (state = initialState, action: actionType) => {
         case "ADD-POST": {
             return {
                 ...state,
-                posts: [...state.posts, {id: 3, message: state.newPostText, likeCount: 0}],
-                newPostText: action.newText
-            }
-        }
-        case "NEW-POST-TEXT-FUNCTION": {
-            return {
-                ...state,
-                newPostText: action.newText
+                posts: [...state.posts, {id: 3, message: action.addPost, likeCount: 0}],
             }
         }
 
@@ -158,17 +142,11 @@ const profileReducer = (state = initialState, action: actionType) => {
         return state */
 }
 
-export const addPostActionCreator = (): AddPostDispatchType => {
-    return {type: "ADD-POST", newText: ""}
+export const addPostActionCreator = (addPost: string): AddPostDispatchType => {
+    return {type: "ADD-POST", addPost}
 
 }
 
-export const onChangeActionCreator = (text: string): NewPostTextFunctionType => {
-    return {
-        type: "NEW-POST-TEXT-FUNCTION",
-        newText: text
-    }
-}
 
 export const setStatusActionCreator = (status: string): SetUsersStatus => {
     return {

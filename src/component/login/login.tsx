@@ -3,11 +3,10 @@ import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../common/FormsControls/FormConrols";
 import {requiredField} from "../../utils/validators/validators";
 import {connect} from "react-redux";
-import {authPropsType, removeLoginDataThunk, setLoginDataThunk} from "../../redux/authReducer";
+import {removeLoginDataThunk, setLoginDataThunk} from "../../redux/authReducer";
 import {Redirect} from "react-router-dom";
-import {dialogsPropsType} from "../../redux/dialogsReducer";
 import {AppStatePropsType} from "../../redux/reduxStore";
-
+import loginStyles from './login.module.css'
 
 type FormDataType = {
     email: string
@@ -21,7 +20,6 @@ type mapStateToPropsType = {
  type mapDispatchLoginToPropsType = {
      setLogin: (email: string, password: string, rememberMe: boolean) => void
      removeLogin: () => void
-
 }
 
 const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
@@ -37,7 +35,7 @@ const LoginForm = (props: InjectedFormProps<FormDataType>) => {
         <div><Field component={Input} name={'password'} type={'password'} placeholder={'Password'} validate={[requiredField]}/></div>
         <div><Field component={Input} name={'rememberMe'} type={'checkbox'}/></div>
         remember me
-        <div>
+        <div className={props.error ? loginStyles.error : ' '}>
             {props.error && <div>{props.error}</div>}
         </div>
         <div>
@@ -57,7 +55,7 @@ const Login = (props: mapStateToPropsType & mapDispatchLoginToPropsType) => {
         props.setLogin(formData.email, formData.password, formData.rememberMe)
     }
 
-    if(props.isAuth) {
+    if (props.isAuth) {
         return <Redirect to={'/profile'}/>
     }
 
@@ -66,7 +64,6 @@ const Login = (props: mapStateToPropsType & mapDispatchLoginToPropsType) => {
         <LoginReduxForm onSubmit={onSubmit}/>
     </div>
 }
-
 
 export default connect (mapStateToProps, {
     setLogin: setLoginDataThunk,

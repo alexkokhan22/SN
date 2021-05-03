@@ -24,7 +24,7 @@ export type NewMessageFunctionType = {
     newMessageText: string
 }
 
-export type actionType = AddNewMessageType
+export type actionDialogsType = AddNewMessageType
 
 let initialState: dialogsPropsType = {
     dialogs: [
@@ -39,7 +39,7 @@ let initialState: dialogsPropsType = {
 }
 
 
-const dialogsReducer = (state = initialState, action: actionType): dialogsPropsType => {
+const dialogsReducer = (state = initialState, action: actionDialogsType): dialogsPropsType => {
     switch (action.type) {
         case "Add-New-Message":
             return {

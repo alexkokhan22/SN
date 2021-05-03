@@ -10,6 +10,13 @@ import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import {withAuthRedirectComponent} from "../../HOC/WithAuthRedirectComponent";
 import {compose} from "redux";
+import {
+    getCurrentPage, getFollowingInProgress, getIsAuth,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers
+} from "../../redux/selectors/usersSelector";
 
 
 
@@ -65,13 +72,13 @@ export class UsersApiComponent extends React.Component<UsersContainerPropsType> 
 
 const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
     return {
-        users: state.users.users,
-        pageSize: state.users.pageSize,
-        totalUsersCount: state.users.totalUsersCount,
-        currentPage: state.users.currentPage,
-        isFetching: state.users.isFetching,
-        followingInProgress: state.users.followingInProgress,
-        isAuth: state.auth.isAuth
+        users: getUsers(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
+        isAuth: getIsAuth(state)
 
     }
 }
@@ -104,7 +111,6 @@ const mapStateToProps = (state: AppStatePropsType): mapStateToPropsType => {
 }
 
 export default compose<React.ComponentType>(
-    withAuthRedirectComponent,
     connect(mapStateToProps, {
     follow: followThunk,
     unFollow: unFollowThunk,

@@ -66,7 +66,7 @@ export type  followingInProgressType = {
     usersId: number
 }
 
-export type ActionUsersPropsType = followACPropsType
+export type actionUsersType = followACPropsType
     | unfollowACPropsType
     | setUsersACPropsType
     | changeCurrentPageType
@@ -84,7 +84,7 @@ export let initialState: UsersPropsType = {
     followingInProgress: []
 }
 
-export const usersReducer = (state = initialState, action: ActionUsersPropsType): UsersPropsType => {
+export const usersReducer = (state = initialState, action: actionUsersType): UsersPropsType => {
     switch (action.type) {
         case 'FOLLOW':
             return {

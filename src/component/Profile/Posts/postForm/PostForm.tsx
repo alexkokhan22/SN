@@ -13,7 +13,7 @@ let maxLength = maxLengthCreator(30)
 const PostsForm = (props: InjectedFormProps<FormDataPostType>) => {
 
     return <form onSubmit={props.handleSubmit}>
-        <div><Field component={Textarea} name={'addPost'} validate={[requiredField, maxLength]} placeholder={'hi'} /></div>
+        <div><Field component={Textarea} name={'addPost'} validate={[requiredField, maxLength]} placeholder={'hi'}  /></div>
         <div>
             <button>Add message</button>
         </div>

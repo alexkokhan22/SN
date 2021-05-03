@@ -60,7 +60,7 @@ export type SetUsersStatus = {
     status: string
 }
 
-export type actionType = AddPostDispatchType
+export type actionProfileType = AddPostDispatchType
     | SetUsersProfile
     | SetUsersStatus
 
@@ -96,7 +96,7 @@ let initialState: profilePropsType = {
 }
 
 
-const profileReducer = (state = initialState, action: actionType) => {
+const profileReducer = (state = initialState, action: actionProfileType) => {
     // logic switch
     switch (action.type) {
         case "ADD-POST": {

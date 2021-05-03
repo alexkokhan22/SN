@@ -1,6 +1,8 @@
 import {Dispatch} from "redux";
 import {headerApi, loginApi} from "../api/api";
 import {stopSubmit} from "redux-form";
+import {ThunkAction} from "redux-thunk";
+import {AppStateActionType, AppStatePropsType} from "./reduxStore";
 
 
 type setUsersDataType = {
@@ -14,7 +16,7 @@ type setUsersDataType = {
 }
 
 
-export type actionType = setUsersDataType
+export type actionAuthUsersType = setUsersDataType
 
 export type authPropsType = {
     id: number | null
@@ -31,7 +33,7 @@ let initialState: authPropsType = {
 }
 
 
-export const authReducer = (state: authPropsType = initialState, action: actionType) => {
+export const authReducer = (state: authPropsType = initialState, action: actionAuthUsersType) => {
     switch (action.type) {
         case "SET-USERS-DATA": {
             return {
@@ -49,26 +51,27 @@ export const setUsersData = (id: number | null, login: string | null, email: str
 }
 
 export const setUsersDataThunk = () => (dispatch: Dispatch) => {
-    headerApi.setUsersLogin().then((data) => {
+    return headerApi.setUsersLogin().then((data) => {
         if(data.resultCode === 0) {
             let {id, login, email} = data.data
             dispatch(setUsersData(id, login, email, true))
-        }else {
-            const messages = data.messages.length > 0 ? data.messages[1] : 'email or password is wrong'
-            dispatch(stopSubmit('login', {_error: messages}))
         }
     })
 }
 
-export const setLoginDataThunk = (email: string, password: string, rememberMe: boolean) => (dispatch: Dispatch<any>) => {
+export const setLoginDataThunk = (email: string, password: string, rememberMe: boolean): ThunkAction<void, AppStatePropsType, unknown, AppStateActionType > => (dispatch) => {
     loginApi.postUsersLogin(email, password, rememberMe).then((data) => {
-        if(data.resultCode === 0) {
-            dispatch(setUsersDataThunk())
+        if (data.resultCode === 0) {
+            return dispatch(setUsersDataThunk())
+
         }
+
+        const messages = data.messages.length > 0 ? data.messages[0] : 'email or password is wrong'
+        dispatch(stopSubmit('login', {_error: messages}))
     })
 }
 
-export const removeLoginDataThunk = () => (dispatch: Dispatch<any>) => {
+export const removeLoginDataThunk = () => (dispatch: Dispatch) => {
     loginApi.deleteUsersLogin().then((data) => {
         if(data.resultCode === 0) {
             dispatch(setUsersData(null, null, null, false))

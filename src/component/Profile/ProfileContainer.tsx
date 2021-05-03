@@ -40,6 +40,9 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
         let userId = this.props.match.params.userId
         if (!userId) {
             userId = this.props.myId
+            if (!userId) {
+                this.props.history.push('/login')
+            }
         }
         this.props.setUsersProfile(userId)
         this.props.getStatus(userId)

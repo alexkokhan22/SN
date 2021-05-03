@@ -1,8 +1,8 @@
-import React, {useState} from "react";
+import React from "react";
 
 type ProfileStatusType = {
     status: string
-    updateStatus :(status: string) => void
+    updateStatus: (status: string) => void
 }
 
 // const ProfileStatus = (props: ProfileStatusType) => {
@@ -39,25 +39,25 @@ class ProfileStatus extends React.Component<ProfileStatusType> {
     }
 
 
-  onDoubleClick = () => {
+    onDoubleClick = () => {
         this.setState({
             editMode: true
         })
     }
 
-   onBlur = () => {
-       this.setState({
-           editMode: false
-       })
-       this.props.updateStatus(this.state.status)
+    onBlur = () => {
+        this.setState({
+            editMode: false
+        })
+        this.props.updateStatus(this.state.status)
     }
 
     componentDidUpdate(prevProps: Readonly<ProfileStatusType>, prevState: Readonly<{}>, snapshot?: any) {
-         if(prevProps.status !== this.props.status) {
-             this.setState({
-                 status: this.props.status
-             })
-         }
+        if (prevProps.status !== this.props.status) {
+            this.setState({
+                status: this.props.status
+            })
+        }
     }
 
     render() {
@@ -65,13 +65,16 @@ class ProfileStatus extends React.Component<ProfileStatusType> {
             {this.state.editMode
                 ?
                 <div>
-                    <input autoFocus={true} onChange={(event => {this.setState({
-                    status: event.currentTarget.value})
-                    })}  onBlur={this.onBlur} value={this.state.status}/>
+                    <input autoFocus={true} onChange={(event => {
+                        this.setState({
+                            status: event.currentTarget.value
+                        })
+                    })} onBlur={this.onBlur} value={this.state.status}/>
                 </div>
                 :
                 <div>
-                    <span onDoubleClick={this.onDoubleClick}>{this.props.status ? this.props.status : 'no status'}</span>
+                    <span
+                        onDoubleClick={this.onDoubleClick}>{this.props.status ? this.props.status : 'no status'}</span>
                 </div>
             }
         </div>;

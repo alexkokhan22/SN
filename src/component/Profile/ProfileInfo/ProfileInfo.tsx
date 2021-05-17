@@ -3,8 +3,7 @@ import classes from "./ProfileInfo.module.css"
 import Preloader from "../../common/Preloader/Preloader";
 import {profileUsersPropsType} from "../../../redux/profileReducer";
 import ProfileStatus from "./ProfileStatus";
-import avatar
-    from '../../../assets/images/kisspng-avatar-user-computer-icons-software-developer-5b327cc9cc15f7.872727801530035401836.png'
+import avatar from '../../../assets/images/kisspng-avatar-user-computer-icons-software-developer-5b327cc9cc15f7.872727801530035401836.png'
 
 type ProfileInfoPropsType = {
     profile: profileUsersPropsType

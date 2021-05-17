@@ -3,14 +3,11 @@ import {createSelector} from "reselect";
 
 
 //reselect библиотека, позволяющая работать с селекторами, дабы не был частый рендеринг, а только для зависимостей
-
-
 export const getUsers = (state: AppStatePropsType) => {
     return state.users.users
 }
 
 //reselect создан для работы с сложной логикой
-
 const getUsersSuper = createSelector(getUsers, (users) => {
     return users.filter((u) => u)
 })

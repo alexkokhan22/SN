@@ -13,43 +13,46 @@ const instance = axios.create(
 )
 
 export const usersApi = {
-    getUsers: (currentPage: number, pageSize: number) => {
-        return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => {
-            return response.data
-        })
+    getUsers: async (currentPage: number, pageSize: number) => {
+        const response = await instance.get(`users?page=${currentPage}&count=${pageSize}`)
+        return response.data
+
     },
-    unFollowUsers: (id: number) => {
-        return instance.delete(`follow/${id}`).then(response => {
-            return response.data
-        })
+    unFollowUsers: async (id: number) => {
+        const response = await instance.delete(`follow/${id}`)
+        return response.data
     },
 
-    followUsers: (id: number) => {
-        return instance.post(`follow/${id}`).then(response => {
-            return response.data
-        })
+    followUsers: async (id: number) => {
+        const response = await instance.post(`follow/${id}`)
+        return response.data
     }
 
 }
 
 export const profileApi = {
-    setUsersProfile: (userId: string) => {
-        return instance.get(`profile/` + userId)
-            .then((response) => {
-                return response.data
-            })
+    setUsersProfile: async (userId: string) => {
+        const response = await instance.get(`profile/` + userId)
+        return response.data
+
     },
-    getStatus: (userId: string) => {
-        return instance.get(`profile/status/` + userId)
-            .then((response) => {
-                return response.data
-            })
+    getStatus: async (userId: string) => {
+        const response = await instance.get(`profile/status/` + userId)
+        return response.data
     },
-    updateStatus: (status: string) => {
-        return instance.put(`profile/status/`, {status: status})
-            .then((response) => {
-                return response.data
-            })
+    updateStatus: async (status: string) => {
+        const response = await instance.put(`profile/status/`, {status: status})
+        return response.data
+    },
+    savePhoto: async (file: any) => {
+        let formData = new FormData()
+        formData.append('image', file)
+        const response = await instance.put(`profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        return response
     }
 }
 

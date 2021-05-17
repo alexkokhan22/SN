@@ -1,6 +1,6 @@
-import { ThunkAction } from "redux-thunk";
-import {setUsersDataThunk} from "./authReducer";
-import {AppStateActionType, AppStatePropsType} from "./reduxStore";
+import {ThunkAction} from 'redux-thunk';
+import {setUsersDataThunk} from './authReducer';
+import {AppStateActionType, AppStatePropsType} from './reduxStore';
 
 
 export type AppReducerPropsType = {
@@ -15,7 +15,7 @@ export type actionAppType = ReturnType<typeof setInitialized>
 
 const appReducer = (state: AppReducerPropsType = initialState, action: actionAppType) => {
     switch (action.type) {
-        case "SET-INITIALIZED": {
+        case 'app/SET-INITIALIZED': {
             return {
                 ...state,
                 initialized: true
@@ -27,15 +27,20 @@ const appReducer = (state: AppReducerPropsType = initialState, action: actionApp
 }
 
 export const setInitialized = () => {
-    return {type: "SET-INITIALIZED"}
+    return {type: 'app/SET-INITIALIZED'}
 }
 
-export const initializeAppTC = (): ThunkAction<void, AppStatePropsType, unknown, AppStateActionType > => (dispatch) => {
-    let promise = dispatch(setUsersDataThunk())
-    Promise.all([promise]).then(() => {
+export const initializeAppTC = ():
+    ThunkAction<void, AppStatePropsType, unknown, AppStateActionType> =>
+    async (dispatch) => {
+        const promise = dispatch(setUsersDataThunk())
+        await Promise.all([promise])
         dispatch(setInitialized())
-    })
-}
+        /*let promise = dispatch(setUsersDataThunk())
+        Promise.all([promise]).then(() => {
+            dispatch(setInitialized())
+        })*/
+    }
 
 export default appReducer;
 

@@ -14,14 +14,9 @@ export type dialogsPropsType = {
 }
 
 export type AddNewMessageType = {
-    type: 'Add-New-Message',
+    type: 'dialogs/Add-New-Message',
     addMessage: string
     newTextMessage: string
-}
-
-export type NewMessageFunctionType = {
-    type: 'New-Message-Function',
-    newMessageText: string
 }
 
 export type actionDialogsType = AddNewMessageType
@@ -41,38 +36,20 @@ let initialState: dialogsPropsType = {
 
 const dialogsReducer = (state = initialState, action: actionDialogsType): dialogsPropsType => {
     switch (action.type) {
-        case "Add-New-Message":
+        case 'dialogs/Add-New-Message':
             return {
                 ...state,
                 messages: [...state.messages, {id: 4, message: action.addMessage}],
             }
-        //state.messages.push(newMessage);
-        // state.newMessageText = action.newTextMessage;
         default:
             return state
 
     }
 
-
-    /* logic if/else
-    if (action.type === 'Add-New-Message') {
-        let newMessage: messagePropsType = {
-            id: 4,
-            message: state.newMessageText
-        }
-        state.messages.push(newMessage)
-        state.newMessageText = action.newTextMessage
-
-    } else if (action.type === 'New-Message-Function') {
-        state.newMessageText = action.newMessageText
-    }
-
-    return state
-    */
 }
 
 export const onClickMessageActionCreator = (addMessage: string): AddNewMessageType => {
-    return {type: 'Add-New-Message', addMessage, newTextMessage: ""}
+    return {type: 'dialogs/Add-New-Message', addMessage, newTextMessage: ''}
 }
 
 

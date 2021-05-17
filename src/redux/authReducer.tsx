@@ -1,12 +1,11 @@
-import {Dispatch} from "redux";
-import {headerApi, loginApi} from "../api/api";
-import {stopSubmit} from "redux-form";
-import {ThunkAction} from "redux-thunk";
-import {AppStateActionType, AppStatePropsType} from "./reduxStore";
-
+import {Dispatch} from 'redux';
+import {headerApi, loginApi} from '../api/api';
+import {stopSubmit} from 'redux-form';
+import {ThunkAction} from 'redux-thunk';
+import {AppStateActionType, AppStatePropsType} from './reduxStore';
 
 type setUsersDataType = {
-    type: "SET-USERS-DATA"
+    type: 'auth/SET-USERS-DATA'
     data: {
         id: number | null
         login: string | null
@@ -14,7 +13,6 @@ type setUsersDataType = {
         isAuth: boolean
     }
 }
-
 
 export type actionAuthUsersType = setUsersDataType
 
@@ -35,7 +33,7 @@ let initialState: authPropsType = {
 
 export const authReducer = (state: authPropsType = initialState, action: actionAuthUsersType) => {
     switch (action.type) {
-        case "SET-USERS-DATA": {
+        case 'auth/SET-USERS-DATA': {
             return {
                 ...state,
                 ...action.data
@@ -46,35 +44,33 @@ export const authReducer = (state: authPropsType = initialState, action: actionA
     }
 }
 
-export const setUsersData = (id: number | null, login: string | null, email: string | null,  isAuth: boolean): setUsersDataType => {
-    return {type: "SET-USERS-DATA", data: {id, login, email, isAuth}}
+export const setUsersData = (id: number | null, login: string | null, email: string | null, isAuth: boolean): setUsersDataType => {
+    return {type: 'auth/SET-USERS-DATA', data: {id, login, email, isAuth}}
 }
 
-export const setUsersDataThunk = () => (dispatch: Dispatch) => {
-    return headerApi.setUsersLogin().then((data) => {
-        if(data.resultCode === 0) {
-            let {id, login, email} = data.data
+export const setUsersDataThunk = () => async (dispatch: Dispatch) => {
+    const response = await headerApi.setUsersLogin()
+        if (response.resultCode === 0) {
+            let {id, login, email} = response.data
             dispatch(setUsersData(id, login, email, true))
         }
-    })
 }
 
-export const setLoginDataThunk = (email: string, password: string, rememberMe: boolean): ThunkAction<void, AppStatePropsType, unknown, AppStateActionType > => (dispatch) => {
-    loginApi.postUsersLogin(email, password, rememberMe).then((data) => {
-        if (data.resultCode === 0) {
-            return dispatch(setUsersDataThunk())
-
+export const setLoginDataThunk = (email: string, password: string, rememberMe: boolean)
+    : ThunkAction<void, AppStatePropsType, unknown, AppStateActionType> =>
+    async (dispatch) => {
+        const response = await loginApi.postUsersLogin(email, password, rememberMe)
+        if (response.resultCode === 0) {
+            await dispatch(setUsersDataThunk())
         }
 
-        const messages = data.messages.length > 0 ? data.messages[0] : 'email or password is wrong'
+        const messages = response.messages.length > 0 ? response.messages[0] : 'email or password is wrong'
         dispatch(stopSubmit('login', {_error: messages}))
-    })
 }
 
-export const removeLoginDataThunk = () => (dispatch: Dispatch) => {
-    loginApi.deleteUsersLogin().then((data) => {
-        if(data.resultCode === 0) {
+export const removeLoginDataThunk = () =>  async  (dispatch: Dispatch) => {
+    const response = await loginApi.deleteUsersLogin()
+        if (response.resultCode === 0) {
             dispatch(setUsersData(null, null, null, false))
         }
-    })
 }

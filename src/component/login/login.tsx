@@ -50,7 +50,7 @@ const LoginReduxForm = reduxForm<FormDataType>(
     }
 ) (LoginForm)
 
-const Login = (props: mapStateToPropsType & mapDispatchLoginToPropsType) => {
+ const Login = (props: mapStateToPropsType & mapDispatchLoginToPropsType) => {
     const onSubmit = (formData: FormDataType) => {
         props.setLogin(formData.email, formData.password, formData.rememberMe)
     }

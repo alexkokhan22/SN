@@ -1,13 +1,10 @@
-import {AddNewMessageType, NewMessageFunctionType} from "./dialogsReducer";
-import {Dispatch} from "redux";
-import {profileApi} from "../api/api";
-
+import {Dispatch} from 'redux';
+import {profileApi} from '../api/api';
 
 export type usersProfilePhotosType = {
     small: string
     large: string
 }
-
 export type contactsUsersPropsType = {
     skype: string
     vk: string
@@ -19,7 +16,6 @@ export type contactsUsersPropsType = {
     instagram: string
     whatsApp: string
 }
-
 export type profileUsersPropsType = {
     aboutMe: string | null
     contacts: contactsUsersPropsType | null
@@ -27,47 +23,43 @@ export type profileUsersPropsType = {
     lookingForAJobDescription: string | null
     fullName: string | null
     userId: number | null
-    photos: usersProfilePhotosType | null
+    photos: usersProfilePhotosType
 
 }
-
 export type postsPropsType = {
     id: number
     message: string
     likeCount: number
 }
-
 export type profilePropsType = {
     posts: Array<postsPropsType>
     profile: profileUsersPropsType
     status: string
 }
-
 export type AddPostDispatchType = {
-    type: 'ADD-POST',
+    type: 'profile/ADD-POST',
     addPost: string
-
 }
-
-
 export type SetUsersProfile = {
-    type: 'SET-USERS-PROFILE'
+    type: 'profile/SET-USERS-PROFILE'
     profile: profileUsersPropsType
 }
-
 export type SetUsersStatus = {
-    type: 'SET-USERS-STATUS'
+    type: 'profile/SET-USERS-STATUS'
     status: string
 }
-
-export type actionProfileType = AddPostDispatchType
+export type DeletePostsType = ReturnType<typeof deletePostsAC>
+export type savePhotosUsersType = ReturnType<typeof saveUsersPhotoProfile>
+export type actionProfileType =
+    AddPostDispatchType
     | SetUsersProfile
     | SetUsersStatus
-
+    | DeletePostsType
+    | savePhotosUsersType
 
 let initialState: profilePropsType = {
     posts: [
-        {id: 1, message: 'My first post', likeCount: 11},
+        {id: 1, message: ' My first post', likeCount: 11},
         {id: 2, message: 'Hi, how are you', likeCount: 21},
     ],
     profile: {
@@ -97,89 +89,97 @@ let initialState: profilePropsType = {
 
 
 const profileReducer = (state = initialState, action: actionProfileType) => {
-    // logic switch
     switch (action.type) {
-        case "ADD-POST": {
+        case 'profile/ADD-POST': {
             return {
                 ...state,
                 posts: [...state.posts, {id: 3, message: action.addPost, likeCount: 0}],
             }
         }
 
-        case "SET-USERS-PROFILE": {
+        case 'profile/SET-USERS-PROFILE': {
             return {
                 ...state,
                 profile: action.profile
             }
         }
 
-        case "SET-USERS-STATUS": {
+        case 'profile/SET-USERS-STATUS': {
             return {
                 ...state,
                 status: action.status
             }
         }
 
+        case 'profile/DELETE-POSTS': {
+            return {
+                ...state,
+                posts: state.posts.filter((p) => p.id !== action.postId)
+            }
+        }
+
+        case "profile/SAVE-USERS-PHOTO-PROFILE": {
+            return {
+                ...state,
+                profile: {...state.profile, photos: action.photos}
+            }
+        }
+
         default:
             return state;
     }
-
-
-    /*  logic if/else
-        if (action.type === 'ADD-POST') {
-            let newPost: postsPropsType = {
-                id: 3,
-                message: state.newPostText,
-                likeCount: 0
-            }
-            state.posts.push(newPost)
-            state.newPostText = action.newText
-
-
-        } else if (action.type === 'NEW-POST-TEXT-FUNCTION') {
-            state.newPostText = action.newText;
-        }
-        return state */
 }
 
+
 export const addPostActionCreator = (addPost: string): AddPostDispatchType => {
-    return {type: "ADD-POST", addPost}
+    return {type: 'profile/ADD-POST', addPost}
 
 }
 
 
 export const setStatusActionCreator = (status: string): SetUsersStatus => {
     return {
-        type: "SET-USERS-STATUS", status
+        type: 'profile/SET-USERS-STATUS', status
     }
 }
 
+export const deletePostsAC = (postId: number) => {
+    return {
+        type: 'profile/DELETE-POSTS', postId
+    } as const
+}
+
 export const setUsersProfile = (profile: profileUsersPropsType): SetUsersProfile => {
-    return {type: "SET-USERS-PROFILE", profile}
+    return {type: 'profile/SET-USERS-PROFILE', profile}
 }
 
-export const setUsersProfileThunk = (userId: string) => (dispatch: Dispatch) => {
-    profileApi.setUsersProfile(userId)
-        .then((data) => {
-            dispatch(setUsersProfile(data))
-        })
+export const saveUsersPhotoProfile = (photos: usersProfilePhotosType) => {
+    return {type: 'profile/SAVE-USERS-PHOTO-PROFILE', photos} as const
 }
 
-export const getUsersStatusThunk = (userId: string) => (dispatch: Dispatch) => {
-    profileApi.getStatus(userId)
-        .then((data) => {
-            dispatch(setStatusActionCreator(data))
-        })
+export const setUsersProfileThunk = (userId: string) => async (dispatch: Dispatch) => {
+    const response = await profileApi.setUsersProfile(userId)
+    dispatch(setUsersProfile(response))
 }
 
-export const updateUsersStatusThunk = (status: string) => (dispatch: Dispatch) => {
-    profileApi.updateStatus(status)
-        .then((data) => {
-            if(data.resultCode === 0) {
-                dispatch(setStatusActionCreator(status))
-            }
-
-        })
+export const getUsersStatusThunk = (userId: string) => async (dispatch: Dispatch) => {
+    const response = await profileApi.getStatus(userId)
+    dispatch(setStatusActionCreator(response))
 }
+
+export const updateUsersStatusThunk = (status: string) => async (dispatch: Dispatch) => {
+    const response = await profileApi.updateStatus(status)
+    if (response.resultCode === 0) {
+        dispatch(setStatusActionCreator(status))
+    }
+}
+
+export const savePhotoThunk = (file: File) => async (dispatch: Dispatch) => {
+    const response = await profileApi.savePhoto(file)
+    if (response.data.resultCode === 0) {
+        dispatch(saveUsersPhotoProfile(response.data.data.photos))
+    }
+}
+
 
 export default profileReducer;

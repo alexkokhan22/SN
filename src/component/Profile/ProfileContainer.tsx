@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import {connect} from "react-redux";
 import {
     getUsersStatusThunk,
-    profileUsersPropsType,
+    profileUsersPropsType, savePhotoThunk,
     setUsersProfileThunk,
     updateUsersStatusThunk
 } from "../../redux/profileReducer";
@@ -28,6 +28,7 @@ export type mapDispatchProfileToPropsType = {
     setUsersProfile: (userId: string | number | null) => void
     getStatus: (userId: string | number | null) => void
     updateStatus: (status: string) => void
+    savePhoto: (files: File) => void
 }
 
 export type ProfileContainerPropsType = mapStateProfileToPropsType & mapDispatchProfileToPropsType
@@ -35,8 +36,7 @@ export type ProfileContainerPropsType = mapStateProfileToPropsType & mapDispatch
 export type WitchRouterProfileContainerType = RouteComponentProps<PathParamsType> & ProfileContainerPropsType
 
 class ProfileContainer extends React.Component<WitchRouterProfileContainerType> {
-
-    componentDidMount() {
+    refresh() {
         let userId = this.props.match.params.userId
         if (!userId) {
             userId = this.props.myId
@@ -48,6 +48,16 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
         this.props.getStatus(userId)
     }
 
+    componentDidMount() {
+        this.refresh()
+    }
+
+    componentDidUpdate(prevProps: Readonly<WitchRouterProfileContainerType>, prevState: Readonly<{}>, snapshot?: any) {
+        if (this.props.match.params.userId !== prevProps.match.params.userId) {
+            this.refresh()
+        }
+    }
+
     render() {
         return (
             <div>
@@ -55,7 +65,9 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
                     {...this.props}
                     profile={this.props.profile}
                     status={this.props.status}
-                    updateStatus = {this.props.updateStatus}
+                    updateStatus={this.props.updateStatus}
+                    isOwner={!this.props.match.params.userId}
+                    savePhoto={this.props.savePhoto}
                 />
             </div>
         );
@@ -74,6 +86,8 @@ export default compose<React.ComponentType>(
     connect(mapStateToProps, {
         setUsersProfile: setUsersProfileThunk,
         getStatus: getUsersStatusThunk,
-        updateStatus: updateUsersStatusThunk}),
+        updateStatus: updateUsersStatusThunk,
+        savePhoto: savePhotoThunk
+    }),
     withRouter,
     withAuthRedirectComponent)(ProfileContainer);

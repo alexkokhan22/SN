@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React from 'react';
 import classes from './Dialogs.module.css'
 import DialogsItem from "./DialogsItem/DialogsItem";
 import Messages from "./Messages/Messages";

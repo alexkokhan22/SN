@@ -1,24 +1,18 @@
 import {Dispatch} from 'redux';
 import {profileApi} from '../api/api';
+import {AppStatePropsType} from "./reduxStore";
+
 
 export type usersProfilePhotosType = {
     small: string
     large: string
 }
 export type contactsUsersPropsType = {
-    skype: string
-    vk: string
-    facebook: string
-    icq: string
-    email: string
-    googlePlus: string
-    twitter: string
-    instagram: string
-    whatsApp: string
+    [key: string]: string
 }
 export type profileUsersPropsType = {
     aboutMe: string | null
-    contacts: contactsUsersPropsType | null
+    contacts: contactsUsersPropsType
     lookingForAJob: boolean
     lookingForAJobDescription: string | null
     fullName: string | null
@@ -157,7 +151,7 @@ export const saveUsersPhotoProfile = (photos: usersProfilePhotosType) => {
     return {type: 'profile/SAVE-USERS-PHOTO-PROFILE', photos} as const
 }
 
-export const setUsersProfileThunk = (userId: string) => async (dispatch: Dispatch) => {
+export const setUsersProfileThunk = (userId: number) => async (dispatch: Dispatch) => {
     const response = await profileApi.setUsersProfile(userId)
     dispatch(setUsersProfile(response))
 }
@@ -181,5 +175,14 @@ export const savePhotoThunk = (file: File) => async (dispatch: Dispatch) => {
     }
 }
 
+export const saveProfileThunk = (profile: profileUsersPropsType) => async (dispatch: Dispatch<any>, getState: () => AppStatePropsType) => {
+    const userId = getState().auth.id
+    const response = await profileApi.saveProfile(profile)
+    if (response.data.resultCode === 0) {
+        if (userId) {
+            dispatch(setUsersProfileThunk(userId))
+        }
+    }
+}
 
 export default profileReducer;

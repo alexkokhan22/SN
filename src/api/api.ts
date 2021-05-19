@@ -1,4 +1,5 @@
 import axios from "axios";
+import {profileUsersPropsType} from "../redux/profileReducer";
 
 const API_KEY = '96882b02-a427-4592-b196-6833093c647f';
 
@@ -31,7 +32,7 @@ export const usersApi = {
 }
 
 export const profileApi = {
-    setUsersProfile: async (userId: string) => {
+    setUsersProfile: async (userId: number) => {
         const response = await instance.get(`profile/` + userId)
         return response.data
 
@@ -44,7 +45,7 @@ export const profileApi = {
         const response = await instance.put(`profile/status/`, {status: status})
         return response.data
     },
-    savePhoto: async (file: any) => {
+    savePhoto: async (file: File) => {
         let formData = new FormData()
         formData.append('image', file)
         const response = await instance.put(`profile/photo`, formData, {
@@ -53,7 +54,12 @@ export const profileApi = {
             }
         })
         return response
+    },
+    saveProfile: async (profile: profileUsersPropsType) => {
+         const response = await instance.put(`profile`, profile)
+        return response
     }
+
 }
 
 

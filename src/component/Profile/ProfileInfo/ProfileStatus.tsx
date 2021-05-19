@@ -73,8 +73,9 @@ class ProfileStatus extends React.Component<ProfileStatusType> {
                 </div>
                 :
                 <div>
-                    <span
-                        onDoubleClick={this.onDoubleClick}>{this.props.status ? this.props.status : 'no status'}</span>
+                    Status: <span onDoubleClick={this.onDoubleClick}>
+                    {this.props.status ? this.props.status : 'no status'}
+                    </span>
                 </div>
             }
         </div>;

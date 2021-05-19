@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import {connect} from "react-redux";
 import {
     getUsersStatusThunk,
-    profileUsersPropsType, savePhotoThunk,
+    profileUsersPropsType, savePhotoThunk, saveProfileThunk,
     setUsersProfileThunk,
     updateUsersStatusThunk
 } from "../../redux/profileReducer";
@@ -11,6 +11,7 @@ import {RouteComponentProps, withRouter} from "react-router-dom";
 import {withAuthRedirectComponent} from "../../HOC/WithAuthRedirectComponent";
 import {AppStatePropsType} from "../../redux/reduxStore";
 import {compose} from "redux";
+import {FormProfileDataType} from "./ProfileInfo/ProfileDataReduxForm";
 
 type PathParamsType = {
     userId: any
@@ -29,6 +30,7 @@ export type mapDispatchProfileToPropsType = {
     getStatus: (userId: string | number | null) => void
     updateStatus: (status: string) => void
     savePhoto: (files: File) => void
+    saveProfile: (formData: FormProfileDataType) => void
 }
 
 export type ProfileContainerPropsType = mapStateProfileToPropsType & mapDispatchProfileToPropsType
@@ -68,6 +70,7 @@ class ProfileContainer extends React.Component<WitchRouterProfileContainerType> 
                     updateStatus={this.props.updateStatus}
                     isOwner={!this.props.match.params.userId}
                     savePhoto={this.props.savePhoto}
+                    saveProfile={this.props.saveProfile}
                 />
             </div>
         );
@@ -87,7 +90,8 @@ export default compose<React.ComponentType>(
         setUsersProfile: setUsersProfileThunk,
         getStatus: getUsersStatusThunk,
         updateStatus: updateUsersStatusThunk,
-        savePhoto: savePhotoThunk
+        savePhoto: savePhotoThunk,
+        saveProfile: saveProfileThunk
     }),
     withRouter,
     withAuthRedirectComponent)(ProfileContainer);

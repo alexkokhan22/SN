@@ -10,7 +10,6 @@ export type FormDataType = {
 let maxLength = maxLengthCreator(100)
 
 const MessageForm = (props: InjectedFormProps<FormDataType>) => {
-
     return <form onSubmit={props.handleSubmit}>
         <div><Field component={Textarea} name={'addMessage'} validate={[requiredField, maxLength]}/></div>
         <div>

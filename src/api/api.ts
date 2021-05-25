@@ -56,7 +56,7 @@ export const profileApi = {
         return response
     },
     saveProfile: async (profile: profileUsersPropsType) => {
-         const response = await instance.put(`profile`, profile)
+        const response = await instance.put(`profile`, profile)
         return response
     }
 
@@ -64,25 +64,28 @@ export const profileApi = {
 
 
 export const headerApi = {
-    setUsersLogin: () => {
-        return instance.get('auth/me')
-            .then((response) => {
-                return response.data
-            })
+    setUsersLogin: async () => {
+        const response = await instance.get('auth/me')
+        return response.data
+
     }
 }
 
 export const loginApi = {
-    postUsersLogin: (email: string, password: string, rememberMe: boolean) => {
-        return instance.post(`auth/login`, {email, password, rememberMe})
-            .then((response) => {
-                return response.data
-            })
+    postUsersLogin: async (email: string, password: string, rememberMe: boolean, captcha: string) => {
+        const response = await instance.post(`auth/login`, {email, password, rememberMe, captcha})
+        return response.data
+
     },
-    deleteUsersLogin: () => {
-        return instance.delete(`auth/login`)
-            .then((response) => {
-                return response.data
-            })
+    deleteUsersLogin: async () => {
+        const response = await instance.delete(`auth/login`)
+        return response.data
+    }
+}
+
+export const securityApi = {
+    captcha: async () => {
+        const response = await instance.get(`security/get-captcha-url`)
+        return response
     }
 }

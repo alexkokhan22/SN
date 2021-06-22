@@ -1,6 +1,5 @@
 import React from 'react';
 import {NavLink} from 'react-router-dom';
-import classes from './../Dialogs.module.css'
 
 
 type DialogsItemPropsType = {
@@ -10,12 +9,11 @@ type DialogsItemPropsType = {
 
 const DialogsItem: React.FC<DialogsItemPropsType> = (props) => {
     return (
-        <div className={classes.item + ' ' + classes.active}>
+        <div>
             <NavLink to={'/dialogs/' + props.id}>{props.name}</NavLink>
         </div>
     )
 }
-
 
 
 export default DialogsItem;

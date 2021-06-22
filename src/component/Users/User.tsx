@@ -16,7 +16,11 @@ type UserPropsType = {
 
 const User = (props: UserPropsType) => {
     return (
-        <div>
+        <div className={classes.userContainer}>
+               <span>
+                   <div className={classes.name}>{props.users.name}</div>
+                   <div>{props.users.status}</div>
+               </span>
                <span>
                    <div>
                        <NavLink to={'/profile/' + props.users.id}>
@@ -26,25 +30,17 @@ const User = (props: UserPropsType) => {
                    </div>
                    <div>
                        {props.users.followed ?
-                           <button disabled={props.followingInProgress.some(id => id === props.users.id)}
+                           <button className={classes.buttonFollow} disabled={props.followingInProgress.some(id => id === props.users.id)}
                                    onClick={() => {
                                        props.unFollowUsers(props.users.id)
                                    }}>unFollow</button>
 
-                           : <button disabled={props.followingInProgress.some(id => id === props.users.id)}
+                           : <button className={classes.buttonFollow} disabled={props.followingInProgress.some(id => id === props.users.id)}
                                      onClick={() => {
                                          props.followUsers(props.users.id)
 
                                      }}>Follow</button>}
-
                    </div>
-               </span>
-
-            <span>
-                   <span>
-                       <div>{props.users.name}</div>
-                       <div>{props.users.status}</div>
-                   </span>
                </span>
         </div>
     )

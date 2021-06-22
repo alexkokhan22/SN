@@ -1,6 +1,31 @@
-.ava {
+.profileInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.avatarContainer {
+    width: 30%;
+    border: 1px solid grey;
     padding: 10px;
 }
+
+.avatar {
+    margin: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.spanPhoto {
+    margin-top: 15px;
+    font-family: Arial sans-serif;
+}
+
+.inputFile {
+    margin-bottom: 10px;
+    background-color: royalblue;
+}
+
 
 .img {
     padding: 10px;
@@ -8,4 +33,97 @@
 
 .myPhoto {
     max-width: 100px;
+}
+
+.statusContainer {
+    width: 80%;
+    border: 1px solid grey;
+    padding: 10px;
+    margin-top: 5px;
+    font-family: Arial sans-serif;
+    font-size: 20px;
+}
+
+.statusInput {
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+}
+
+.profileDataContainer {
+    padding: 10px;
+    font-family: Arial sans-serif;
+    width: 50%;
+    border: 1px solid grey;
+    margin-left: 10px;
+}
+
+.profileDataContainer span {
+    font-weight: bold;
+}
+
+.contactsContainer {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    padding-top: 5px;
+}
+
+.contactsContainer span {
+    font-weight: bold;
+}
+
+.buttonEdit {
+    border: none;
+    background-color: royalblue;
+    color: white;
+}
+
+.buttonEdit:active {
+    background: darkgrey;
+}
+
+.editDataContainer {
+    padding: 10px;
+    font-family: Arial sans-serif;
+    width: 100%;
+    border: 1px solid grey;
+    margin-left: 10px;
+}
+
+.buttonSave {
+    margin-top: 10px;
+    border: none;
+    background-color: royalblue;
+    color: white;
+}
+
+.editContactsContainer {
+    margin-top: 10px;
+    font-weight: bolder;
+}
+
+.editContactsContainer span{
+    margin-bottom: 20px;
+}
+
+.editContactsContainer input{
+    margin-top: 5px;
+    border: none;
+    height: 30px;
+}
+
+.editDataContainer span{
+    font-weight: bolder;
+}
+
+.editDataContainer input{
+    margin-top: 5px;
+    border: none;
+    height: 30px;
+}
+
+.editDataContainer textarea{
+    margin-top: 5px;
+    border: none;
+    height: 40px;
 }

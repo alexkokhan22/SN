@@ -1,5 +1,6 @@
 import React from "react";
 import {profileUsersPropsType} from "../../../redux/profileReducer";
+import classes from "./ProfileInfo.module.css"
 
 
 type ProfileDataType = {
@@ -10,18 +11,18 @@ type ProfileDataType = {
 
 const ProfileData = (props: ProfileDataType) => {
     return (
-        <div>
-            {props.isOwner && <div>
-                <button onClick={props.goToEditMode}>edit</button>
-            </div>}
-            <div>Full name: {props.profile.fullName}</div>
-            <div>Looking for a Job: {props.profile.lookingForAJob ? 'yes' : 'no'}</div>
-            <div>My professional skills: {props.profile.lookingForAJobDescription}</div>
-            <div>About Me: {props.profile.aboutMe}</div>
-            <div>Contacts: {Object.keys(props.profile.contacts).map((key) => {
+        <div className={classes.profileDataContainer}>
+            <div><span>Full name:</span> {props.profile.fullName}</div>
+            <div><span>Looking for a Job:</span> {props.profile.lookingForAJob ? 'yes' : 'no'}</div>
+            <div><span>My professional skills:</span> {props.profile.lookingForAJobDescription}</div>
+            <div><span>About Me:</span> {props.profile.aboutMe}</div>
+            <div className={classes.contactsContainer}><span>Contacts:</span> {Object.keys(props.profile.contacts).map((key) => {
                 return <ContactsProfile key={key} contactTitle={key} contactValue={props.profile.contacts[key]}/>
             })}
             </div>
+            {props.isOwner && <div>
+                <button className={classes.buttonEdit} onClick={props.goToEditMode}>edit</button>
+            </div>}
         </div>
     )
 }

@@ -13,13 +13,13 @@ const MyPosts = React.memo( (props: MyPostsPropsType) => {
     }
 
     return (
-        <div>
+        <div className={classes.postsContainer}>
             <div className={classes.item}>
-                <h3>My post</h3>
+                <h2>My post</h2>
             </div>
-            <PostsReduxForm onSubmit={addPost}/>
-            <div>
-                {postElement}
+            <div className={classes.addPostContainer}>
+                <PostsReduxForm onSubmit={addPost}/>
+                <div className={classes.postContainer}>{postElement}</div>
             </div>
 
         </div>

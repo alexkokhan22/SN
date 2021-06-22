@@ -1,3 +1,31 @@
+.paginatorContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.paginatorPrev {
+    margin-right: 10px;
+}
+
+.paginatorPrev button{
+    font-family: Arial sans-serif;
+    font-size: 14px;
+}
+
+.paginatorNext {
+    margin-left: 10px;
+    font-family: Arial sans-serif;
+    font-size: 14px;
+}
+
 .selectedPage {
     font-weight: bold;
+    color: royalblue;
+}
+
+.numberPage span {
+    margin-right: 5px;
 }

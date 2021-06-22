@@ -1,4 +1,5 @@
 import React from "react";
+import classes from "./ProfileInfo.module.css"
 
 type ProfileStatusType = {
     status: string
@@ -64,15 +65,15 @@ class ProfileStatus extends React.Component<ProfileStatusType> {
         return <div>
             {this.state.editMode
                 ?
-                <div>
-                    <input autoFocus={true} onChange={(event => {
+                <div className={classes.statusContainer}>
+                    <input className={classes.statusInput} autoFocus={true} onChange={(event => {
                         this.setState({
                             status: event.currentTarget.value
                         })
                     })} onBlur={this.onBlur} value={this.state.status}/>
                 </div>
                 :
-                <div>
+                <div className={classes.statusContainer}>
                     Status: <span onDoubleClick={this.onDoubleClick}>
                     {this.props.status ? this.props.status : 'no status'}
                     </span>

@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './Post.module.css';
-import avatar from '../../../../assets/images/user-1.png'
+import avatar from '../../../../assets/images/5.jpg'
 
 export type MessagePropsType = {
     message: string
@@ -11,10 +11,12 @@ const Post: React.FC<MessagePropsType> = (props) => {
     return (
             <div className={classes.post}>
                 <div><img src={avatar}/></div>
-                <div>{props.message}</div>
-                <div>
-                    <span>Like</span>
-                    <span>{props.likeCount}</span>
+                <div className={classes.messagesContainer}>
+                    <div className={classes.message}>{props.message}</div>
+                    <div className={classes.likes}>
+                        <span>Like</span>
+                        <span>{props.likeCount}</span>
+                    </div>
                 </div>
             </div>
 

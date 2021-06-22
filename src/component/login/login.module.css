@@ -1,6 +1,62 @@
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h1 {
+    font-family: Arial sans-serif;
+}
+
+.input {
+    width: 250px;
+    height: 30px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+::-webkit-input-placeholder {color:black;}
+
+.checkboxContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.checkbox {
+    border-radius: 5px;
+}
+
+.checkbox:active {
+    background: black;
+}
+
+.checkboxSpan {
+    font-family: Arial sans-serif;
+    margin-left: 10px;
+    font-size: 18px;
+}
+
+.loginButton {
+    width: 80px;
+    height: 25px;
+    border-radius: 5px;
+    background-color: royalblue;
+    border: none;
+    color: white;
+    font-family: Arial sans-serif;
+}
+
+.loginButton:active {
+    background-color: darkgrey;
+}
+
 .error {
     margin: 15px 0;
     width: 120px;
     border: red 1px solid;
     color: red;
 }
+

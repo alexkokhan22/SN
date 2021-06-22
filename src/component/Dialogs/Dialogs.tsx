@@ -3,7 +3,7 @@ import classes from './Dialogs.module.css'
 import DialogsItem from "./DialogsItem/DialogsItem";
 import Messages from "./Messages/Messages";
 import {DialogsPropsType} from "./DialogsContainer";
-import MessageReduxForm, { FormDataType } from './messageForm/MessageForm';
+import MessageReduxForm, {FormDataType} from './messageForm/MessageForm';
 
 
 const Dialogs = (props: DialogsPropsType) => {
@@ -17,12 +17,12 @@ const Dialogs = (props: DialogsPropsType) => {
 
     return (
         <div className={classes.dialogs}>
-            <div className={classes.dialogsItem}>
-                {dialogsItem}
-            </div>
-            <div className={classes.messages}>
-                {messageItem}
-            </div>
+                <div className={classes.dialogsItem}>
+                    {dialogsItem}
+                </div>
+                <div className={classes.messages}>
+                    {messageItem}
+                </div>
             <MessageReduxForm onSubmit={addNewMessage}/>
         </div>
     )

@@ -36,13 +36,34 @@ type IProps = {
 }
 
 const LoginForm = (props: InjectedFormProps<FormDataType, IProps> & IProps) => {
-
     return <form onSubmit={props.handleSubmit}>
-        <div><Field component={Input} name={'email'} placeholder={'email'} validate={[requiredField]}/></div>
-        <div><Field component={Input} name={'password'} type={'password'} placeholder={'Password'}
-                    validate={[requiredField]}/></div>
-        <div><Field component={Input} name={'rememberMe'} type={'checkbox'}/></div>
-        remember me
+        <div>
+            <Field
+                className={loginStyles.input}
+                component={Input} name={'email'}
+                placeholder={'email'}
+                validate={[requiredField]}
+            />
+        </div>
+        <div>
+            <Field
+                className={loginStyles.input}
+                component={Input}
+                name={'password'}
+                type={'password'}
+                placeholder={'password'}
+                validate={[requiredField]}
+            />
+        </div>
+        <div className={loginStyles.checkboxContainer}>
+            <Field
+                className={loginStyles.checkbox}
+                component={Input}
+                name={'rememberMe'}
+                type={'checkbox'}
+            />
+            <span  className={loginStyles.checkboxSpan}>remember me</span>
+        </div>
         <div>
             {props.captchaUrl && <img src={props.captchaUrl}/>}
             {props.captchaUrl && <Field component={Input} name={'captcha'}/>}
@@ -51,7 +72,7 @@ const LoginForm = (props: InjectedFormProps<FormDataType, IProps> & IProps) => {
             {props.error && <div>{props.error}</div>}
         </div>
         <div>
-            <button>Login</button>
+            <button className={loginStyles.loginButton}>Login</button>
         </div>
     </form>
 }
@@ -71,8 +92,8 @@ const Login = (props: mapStateToPropsType & mapDispatchLoginToPropsType) => {
         return <Redirect to={'/profile'}/>
     }
 
-    return <div>
-        <h1>Login</h1>
+    return <div className={loginStyles.loginContainer}>
+        <h1 className={loginStyles.h1}>Login</h1>
         <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl ? props.captchaUrl : ''}/>
     </div>
 }

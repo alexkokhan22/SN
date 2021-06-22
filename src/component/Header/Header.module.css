@@ -1,13 +1,50 @@
 .header img {
-    width: 65px;
+    width: 55px;
+    margin: 10px;
 }
 
 .header {
     grid-area: h;
-    background-color: black;
+    background-color: royalblue;
+    height: 80px;
 }
 
 .login {
     float: right;
-    color: aliceblue;
+    margin-right: 30px;
+    margin-top: 20px;
+    font-size: 22px;
+    text-decoration: none;
+
+}
+
+.logOut {
+    font-family: Arial sans-serif;
+    color: white;
+    margin-right: 10px;
+}
+
+.buttonLogOut {
+    background-color: white;
+    border-radius: 5px;
+    margin-left: 10px;
+    border: none;
+    height: 25px;
+    width: 80px;
+    font-family: Arial sans-serif;
+    font-size: 15px;
+}
+
+.buttonLogOut:active {
+    background-color: darkgrey;
+}
+
+.buttonLogOut:hover {
+    background-color: darkgrey;
+}
+
+.loginNav {
+    color: white;
+    text-decoration: none;
+    font-family: Arial sans-serif;
 }

@@ -1,24 +1,53 @@
 .dialogs {
     display: grid;
     grid-template-columns: 2fr 10fr;
+    margin: 10px;
+    border: 1px solid black;
 }
 
 .dialogsItem {
     padding: 20px;
+    font-family: Arial sans-serif;
 }
 
-.dialogsItem .active {
-    color: gold;
+.dialogsItem a {
+    text-decoration: none;
+    font-size: 20px;
+    color: royalblue;
 }
 
-.item {
 
+.dialogsItem a:active {
+    color: black;
 }
 
 .messages {
     padding: 20px;
+    font-family: Arial sans-serif;
+    font-size: 20px;
 }
 
-.message {
+.textarea {
+    margin: 10px;
+}
 
+.textarea textarea {
+    border-radius: 5px;
+    border: none;
+    width: 200px;
+    height: 100px;
+}
+
+.buttonAdd {
+    margin: 10px;
+}
+
+.buttonAdd button {
+    border: none;
+    background-color: royalblue;
+    color: white;
+}
+
+.buttonAdd button:active {
+    background-color: grey;
 }

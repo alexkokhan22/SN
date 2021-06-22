@@ -4,9 +4,9 @@ import Preloader from "../../common/Preloader/Preloader";
 import {profileUsersPropsType} from "../../../redux/profileReducer";
 import ProfileStatus from "./ProfileStatus";
 import avatar
-    from '../../../assets/images/kisspng-avatar-user-computer-icons-software-developer-5b327cc9cc15f7.872727801530035401836.png'
+    from '../../../assets/images/5.jpg'
 import ProfileData from "./ProfileData";
-import {FormProfileDataType, ProfileDataReduxForm } from "./ProfileDataReduxForm";
+import {FormProfileDataType, ProfileDataReduxForm} from "./ProfileDataReduxForm";
 
 
 type ProfileInfoPropsType = {
@@ -35,7 +35,7 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
             props.savePhoto(e.target.files[0])
     }
 
-    const setSubmit =  async (formData: FormProfileDataType) => {
+    const setSubmit = async (formData: FormProfileDataType) => {
         await props.saveProfile(formData)
         setEditMode(false)
     }
@@ -43,11 +43,14 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
 
     return (
         <div className={classes.profileInfo}>
-            {/*<div className={classes.img}><img src={'https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png'}/></div>*/}
-            <div className={classes.ava}>
-                <img className={classes.myPhoto} src={props.profile.photos.large || avatar}/>
-                <div>{props.isOwner && <input type={'file'} onChange={mainPhotoSelected}/>}</div>
-                <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+            <div className={classes.avatar}>
+                <div className={classes.avatarContainer}>
+                    <img className={classes.myPhoto} src={props.profile.photos.large || avatar}/>
+                    <div>{props.isOwner && <div className={classes.spanPhoto}>Download photo</div>}</div>
+                    <div>{props.isOwner &&
+                    <input className={classes.inputFile} type={'file'} onChange={mainPhotoSelected}/>}</div>
+                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
+                </div>
                 {editMode
                     ? <ProfileDataReduxForm profile={props.profile} initialValues={props.profile} onSubmit={setSubmit}/>
                     : <ProfileData profile={props.profile} isOwner={props.isOwner} goToEditMode={goToEditMode}/>
@@ -56,8 +59,6 @@ const ProfileInfo = (props: ProfileInfoPropsType) => {
         </div>
     );
 }
-
-
 
 
 export default ProfileInfo;
